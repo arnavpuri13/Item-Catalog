@@ -11,7 +11,7 @@ app = Flask(__name__)
 
 app_root = os.path.abspath(os.path.join(os.path.dirname(__file__), '..'))
 
-client_secret = os.path.join(app_root, 'client_secret_google.json')
+client_secret = os.path.join(app_root, '/var/www/catalog/client_secret_google.json')
 app.config['GOOGLE_CLIENT_ID'] = json.loads(open(client_secret, 'r').read())['web']['client_id']
 
 
@@ -21,7 +21,8 @@ app.config['UPLOAD_FOLDER'] = os.path.join(app_root, 'uploads')
 app.config['ALLOWED_IMAGE_EXTENSIONS'] = set(['jpg', 'jpeg', 'png', 'gif'])
 
 
-engine = create_engine('postgresql:///catalog')
+engine = create_engine('postgresql://catalog:sillypassword@localhost/catalog')
+
 Base.metadata.bind = engine
 DBSession = sessionmaker(bind = engine)
 db = DBSession()
