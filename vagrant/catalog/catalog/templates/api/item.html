@@ -1,0 +1,55 @@
+
+{% extends "_main.html" %}
+
+{% block page_header %}
+
+<h1>Item: {{ item.name }}</h1>
+
+<p>
+    <a class="col" href="{{ url_for('api.view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Catalog home</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('api.view_category', category_id = item.category_id) }}"><span class="glyphicon glyphicon-folder-close"></span>Home</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('data.view_item_json', item_id = item.id) }}"><span class="glyphicon glyphicon-download-alt"></span>JSON</a>
+    {% if item.user_id == session["user_id"] %}
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('api.edit_item', item_id = item.id) }}"><span class="glyphicon glyphicon-pencil"></span> Edit items</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('api.delete_item', item_id = item.id) }}"><span class="glyphicon glyphicon-trash"></span> Delete items</a>
+    {% endif %}
+</p>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-6">
+        <dl class="dl-horizontal">
+            <dt>Name:</dt>
+                <dd>{{ item.name }}</dd>
+            <dt>Description:</dt>
+                <dd>
+                {% if item.description %}
+                    {{ item.description }}
+                {% else %}
+                    &nbsp;
+                {% endif %}
+                </dd>
+            <dt>Category:</dt>
+                <dd><a href="{{ url_for('api.view_category', category_id = item.category_id) }}">{{ item.category.name }}</a></dd>
+            <dt>Created by:</dt>
+                <dd>{{ item.user.name }}</dd>
+            <dt>Created on:</dt>
+                <dd>{{ item.created.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
+            <dt>Last modified:</dt>
+                <dd>{{ item.updated.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
+        </dl>
+    </div>
+    <div class="col-sm-6 text-right">
+        <img width="300" src="{{ get_image_url(item.image) }}">
+    </div>
+</div>
+
+{% endblock %}

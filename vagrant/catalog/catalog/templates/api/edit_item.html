@@ -1,0 +1,54 @@
+
+{% extends "_main.html" %}
+
+{% block page_header %}
+
+<h1>Edit item: {{ item.name }}</h1>
+
+<p>
+    <a class="col" href="{{ url_for('api.view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Catalog home</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('api.view_category', category_id = item.category_id) }}"><span class="glyphicon glyphicon-folder-close"></span> Home</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('data.view_item_json', item_id = item.id) }}"><span class="glyphicon glyphicon-download-alt"></span>JSON</a>
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('api.view_item', item_id = item.id) }}"><span class="glyphicon glyphicon-file"></span> View items</a>
+    {% if item.user_id == session["user_id"] %}
+    &nbsp;|&nbsp;
+    <a class="col" href="{{ url_for('api.delete_item', item_id = item.id) }}"><span class="glyphicon glyphicon-trash"></span> Delete items</a>
+    {% endif %}
+</p>
+
+{% endblock %}
+
+
+{% block content %}
+
+{% from "_form_helpers.html" import render_csrf_field %}
+{% from "_form_helpers.html" import render_field %}
+<form method="POST" enctype="multipart/form-data" action="{{ url_for('api.edit_item', item_id = item.id) }}">
+    {{ render_csrf_field(form) }}
+    <div class="row">
+        <div class="col-sm-6">
+            {{ render_field(form.name) }}
+            {{ render_field(form.description, rows = 5) }}
+            {{ render_field(form.category_id) }}
+            {{ render_field(form.image) }}
+        </div>
+        <div class="col-sm-6 text-right">
+            <img id="image" name="image" width="300" src="{{ get_image_url(item.image) }}">
+        </div>
+    </div>
+    <dl class="dl-horizontal">
+        <dt>Created by:</dt>
+            <dd>{{ item.user.name }}</dd>
+        <dt>Created on:</dt>
+            <dd>{{ item.created.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
+        <dt>Last modified:</dt>
+            <dd>{{ item.updated.strftime("%Y-%m-%d %H:%M:%S") }}</dd>
+    </dl>
+    <input type="submit" class="btn btn-primary btn-block" value="Save"/>
+    <a class="btn btn-default btn-block" href="{{ url_for('api.view_item', item_id = item.id) }}">Cancel</a><br/>
+</form>
+
+{% endblock %}

@@ -1,0 +1,17 @@
+{% extends "_main.html" %}
+
+{% block page_header %}
+
+<h1>500 - Internal Server Error</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="container-fluid text-center">
+    <p>Oh no, something went wrong :'(</p>
+    <p><a href="{{ url_for('api.view_catalog') }}">Go back to catalog</a></p>
+</div>
+
+{% endblock %}

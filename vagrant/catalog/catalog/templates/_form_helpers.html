@@ -1,0 +1,26 @@
+
+{% macro render_field(field) %}
+  <div class="form-group">
+    <label class="control-label" for="{{ field.id }}">{{ field.label }}:</label>
+    {{ field(class = "form-control", **kwargs)|safe }}
+    {% if field.errors %}
+      <ul class="errors">
+      {% for error in field.errors %}
+        <li>{{ error }}</li>
+      {% endfor %}
+      </ul>
+    {% endif %}
+  </div>
+{% endmacro %}
+
+
+{% macro render_csrf_field(form) %}
+  <div class="form-group">
+    {{ form.csrf_token }}
+    {% if form.csrf_token.errors %}
+        <ul class="errors">
+          <li>Invalid CSRF token!</li>
+        </ul>
+    {% endif %}
+  </div>
+{% endmacro %}

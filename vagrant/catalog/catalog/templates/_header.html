@@ -1,0 +1,22 @@
+
+<nav class="navbar navbar-inverse navbar-static-top">
+    <div class="container">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#">Item catalog</a>
+        </div>
+        <ul class="nav navbar-nav">
+            <li><a href="{{ url_for('api.view_catalog') }}"><span class="glyphicon glyphicon-home"></span> Home</a></li>
+            <li><a href="{{ url_for('data.view_catalog_json') }}"><span class="glyphicon glyphicon-download-alt"></span> JSON</a></li>
+            <li><a href="{{ url_for('data.recent_atom_feed') }}"><span class="glyphicon glyphicon-list"></span> Atom feed</a></li>
+            <li><a class="col" href="{{ url_for('api.new_item') }}"><span class="glyphicon glyphicon-plus"></span> Add items</a></li>
+        </ul>
+        <ul class="nav navbar-nav navbar-right">
+        {% if 'username' in session %}
+            <li><a href="{{ url_for('api.user_profile') }}"><span class="glyphicon glyphicon-user"></span> {{ session['username'] }} ({{ session['email'] }})</a></li>
+            <li><a href="{{ url_for('auth.logout') }}"><span class="glyphicon glyphicon-log-out"></span> Logout </a></li>
+        {% else %}
+            <li><a href="{{ url_for('auth.login') }}"><span class="glyphicon glyphicon-log-in"></span> Login </a></li>
+        {% endif %}
+        </ul>
+    </div>
+</nav>

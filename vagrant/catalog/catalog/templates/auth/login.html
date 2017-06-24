@@ -1,0 +1,74 @@
+
+{% extends "_main.html" %}
+
+{% block page_header %}
+
+<h1>Login</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+
+<div class="text-center">
+  <div class="row">
+    <button id="g-signin-button">Sign in with Google</button>
+    <script>
+      $('#g-signin-button').click(function() {
+        auth2.grantOfflineAccess({'redirect_uri': 'postmessage'}).then(signInCallback);
+      });
+    </script>
+  </div>
+  <div class="row">
+    <div id="result">
+	</div>
+  </div>
+</div>
+
+
+<script>
+function signInCallback(authResult) {
+  if (authResult['code']) {
+    console.log("code: " + authResult['code'])
+
+    $('#signinButton').attr('style', 'display: none');
+
+    $.ajax({
+      type: 'POST',
+      url: '/google_connect',
+      contentType: 'application/octet-stream; charset=utf-8',
+      success: function(result) {
+        if(result) {
+            $('#result').html('<br/><p>Login Successful!</p>' + result + '<p>Redirecting...</p>');
+            setTimeout(function() {
+                window.location.href = '{{ next }}'
+            }, 5000)
+        }
+        else if (authResult['error']) {
+            console.log('There was an error: ' + authResult['error']);
+        }
+        else {
+            $('#result').html('Failed to make a server-side call. Check your configuration and console.');
+        }
+      },
+      error: function(xhr, status, error) {
+        console.log("status: " + status);
+        console.log("error: " + error);
+        console.log("response status: " + xhr.status);
+        console.log("response text: " + xhr.responseText);
+
+        errorMsg = "Failed to connect: " + xhr.responseText;
+        console.log(errorMsg)
+        alert(errorMsg)
+        $('#result').html(errorMsg);
+      },
+      processData: false,
+      data: authResult['code']
+    });
+  } else {
+  }
+}
+</script>
+
+{% endblock %}

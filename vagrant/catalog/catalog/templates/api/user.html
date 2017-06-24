@@ -1,0 +1,39 @@
+
+{% extends "_main.html" %}
+
+{% block page_header %}
+
+<h1>User profile</h1>
+
+{% endblock %}
+
+
+{% block content %}
+
+<div class="row">
+    <div class="col-sm-6">
+        <dl class="dl-horizontal">
+            <dt>Name:</dt>
+                <dd>{{ user.name }}</dd>
+            <dt>Email:</dt>
+                <dd>{{ user.email }}</dd>
+        </dl>
+        <div class="text-center">
+            <img class="img-circle" width="200" src="{{ user.picture }}">
+        </div>
+    </div>
+    <div class="col-sm-6">
+        <h2>Items</h2>
+        <ul>
+        {% for i in items %}
+            <li>
+                <a href="{{ url_for('api.view_item', item_id = i.id) }}">{{ i.name }}</a>
+                <small>(<a href="{{ url_for('api.view_category', category_id = i.category.id) }}">{{ i.category.name }}</a>)</small>
+            </li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
+
+
+{% endblock %}
