@@ -60,7 +60,7 @@ def google_connect():
     code = request.data
 
     try:
-        oauth_flow = flow_from_clientsecrets(os.path.join(app_root, 'client_secret_google.json'), scope = '')
+        oauth_flow = flow_from_clientsecrets(os.path.join(app_root, '/var/www/catalogclient_secret_google.json'), scope = '')
         oauth_flow.redirect_uri = 'postmessage'
         credentials = oauth_flow.step2_exchange(code)
     except FlowExchangeError:
